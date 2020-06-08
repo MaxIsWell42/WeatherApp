@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>Enter your location:</h3>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.city.label }} 
+            {{ form.city(size=32) }}
+        </p>
+        <p>
+            {{ form.state.label }}
+        </p>
+    </form>
+{% endblock %}

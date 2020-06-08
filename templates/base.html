@@ -5,5 +5,10 @@
 <body>
     <h1>Today's Weather in {{city}}</h1>
         <div>{{weather}}</div>
+
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>

@@ -7,22 +7,32 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET","POST"])
 def homepage():
+    # Get the API key
+    api_key = os.environ.get('API_KEY')
+    
+    # Some default values
+    city = "San Francisco"
+    state = "CA"
+    
+    # If a location has not been submitted yet, ask for one(WIP)
     if request.method == "POST":
         city = request.form("City Name: ")
         state = request.form("State Code: ")
     
-    params = {
-    'api_key': os.environ.get('API_KEY'),
-    'city_name': city,
-    'state_code': state,
-    }
+    # params = {
+    # 'city_name': city,
+    # 'state_code': state,
+    # 'api_key': os.environ.get('API_KEY'),
+    # }
+    # print(params['api_key'])
     
+    # Make the request
+    url = 'http://api.openweathermap.org/data/2.5/weather?q={},{}&appid={}'
     r = requests.get(
-        'api.openweathermap.org/data/2.5/weather?q={city_name},{state_code}&appid={API_KEY}',
-        params=params)
-    print(r.url, "hello")
+        url.format(city, state, api_key)).json()
+    # print("\n", r.url, "\n")
     
-    return render_template('weatherHome.html', weather=r) # Add name of JSON catagory we're looking for
+    return render_template('base.html', weather=r) # Add name of specific JSON category if you want one
 
 if __name__ == '__main__':
     app.run()
