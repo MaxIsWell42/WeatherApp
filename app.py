@@ -17,6 +17,9 @@ def homepage():
     api_key = os.environ.get('API_KEY')
     # print(api_key)
     
+    # Final Weather Attributes we want
+    weather=[]
+    
     # Some default values
     city = "San Francisco"
     state = "California"
@@ -25,13 +28,19 @@ def homepage():
     url = 'http://api.openweathermap.org/data/2.5/weather?q={},{}&appid={}'
     r = requests.get(
         url.format(city, state, api_key))
-    # x = json.loads(r)
-    # r = x["weather"]
-    weatherJSON = r.json()
-    r = weatherJSON["weather"]
+
+    # Get a dict of JSON data
+    weather_JSON = r.json()
+
+    # Parsing JSON is fun
+    main = weather_JSON['weather'][0]['main']
+    description = weather_JSON['weather'][0]['description']
+    
+    weather.append(main)
+    weather.append(description)
     # print("\n", r.json(), "\n")
     
-    return render_template('base.html', weather=r) # Add name of specific JSON category if you want one
+    return render_template('base.html', weather=weather)
 
 @app.route("/", methods = ['GET', 'POST'])
 def Location():
