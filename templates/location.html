@@ -2,14 +2,23 @@
 
 {% block content %}
     <h3>Enter your location:</h3>
-    <form action="" method="post" novalidate>
+    <form action="/success" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
             {{ form.city.label }} 
             {{ form.city(size=32) }}
+            {% for error in form.city.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
         <p>
             {{ form.state.label }}
+            {{ form.state(size=20)}}
+            {% for error in form.state.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </p>
+        <p>{{ form.submit() }}</p>
+        <!-- <p><input type="submit" value="submit"></p> -->
     </form>
 {% endblock %}
