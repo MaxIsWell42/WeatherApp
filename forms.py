@@ -4,5 +4,5 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, valid
 class LocationForm(Form):
     city    = StringField('City', [validators.Length(min=4, max=25)])
     state   = StringField('State', [validators.Length(min=4, max=25)])
-    mood    = StringField('Mood', [validators.Length(min=3, max=34)])
+    mood    = StringField('Your Mood Today', [validators.Length(min=3, max=34)])
     submit = SubmitField('Enter')

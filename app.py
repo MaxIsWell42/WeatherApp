@@ -21,8 +21,10 @@ def homepage():
     weather=[]
     
     # Some default values
-    city = "San Francisco"
-    state = "California"
+    # city = LocationForm.city.data
+    # state = LocationForm.state.data
+    # mood = LocationForm.mood.data
+    # print(city, state, mood)
         
     # Make the request
     url = 'http://api.openweathermap.org/data/2.5/weather?q={},{}&appid={}'
@@ -48,8 +50,10 @@ def Location():
     if form.validate_on_submit():
         city = LocationForm.city.data
         state = LocationForm.state.data
-        print(city, state)
-        return url_for('success')
+        mood = LocationForm.mood.data
+        
+        weather = [city, state, mood]
+        return url_for('/', weather=weather)
     return render_template('location.html', form=form)
 
 if __name__ == '__main__':
