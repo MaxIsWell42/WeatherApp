@@ -21,8 +21,15 @@ def homepage(location):
     # print(api_key)
     weather_data = []
     
+    # Some default values
+    city = "San Francisco"
+    state = "California"
+    mood = "Exhausted"
+    
     # Final Location Attributes we want
-    city = location['city']
+    # city =
+    # state =
+    # mood = 
         
     # Make the request
     url = 'http://api.openweathermap.org/data/2.5/weather?q={},{}&appid={}'
