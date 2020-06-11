@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 from forms import LocationForm
 import requests
 import json
@@ -15,7 +15,7 @@ state = ""
 mood = ""
 
 @app.route('/success', methods=["GET","POST"])
-def homepage():
+def homepage(location):
     # Get the API key
     api_key = os.environ.get('API_KEY')
     # print(api_key)
@@ -49,12 +49,11 @@ def Location():
     form = LocationForm()
     if form.validate_on_submit() and request.method == "POST":
         location = {
-            'city': LocationForm.city.data,
-            'state': LocationForm.state.data,
-            'mood': LocationForm.mood.data,
+            'city': form.city.data,
+            'state': form.state.data,
+            'mood': form.mood.data,
         }
-        
-        return url_for('/success')
+        return redirect(url_for('homepage'))
     return render_template('location.html', form=form)
 
 if __name__ == '__main__':
