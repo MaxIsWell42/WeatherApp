@@ -10,21 +10,19 @@ app = Flask(__name__)
 # Generate a CSRF Secret Key
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
+city = ""
+state = ""
+mood = ""
 
 @app.route('/success', methods=["GET","POST"])
 def homepage():
     # Get the API key
     api_key = os.environ.get('API_KEY')
     # print(api_key)
+    weather_data = []
     
-    # Final Weather Attributes we want
-    weather=[]
-    
-    # Some default values
-    # city = LocationForm.city.data
-    # state = LocationForm.state.data
-    # mood = LocationForm.mood.data
-    # print(city, state, mood)
+    # Final Location Attributes we want
+    city = location['city']
         
     # Make the request
     url = 'http://api.openweathermap.org/data/2.5/weather?q={},{}&appid={}'
@@ -35,25 +33,28 @@ def homepage():
     weather_JSON = r.json()
 
     # Parsing JSON is fun
-    main = weather_JSON['weather'][0]['main']
-    description = weather_JSON['weather'][0]['description']
-    
-    weather.append(main)
-    weather.append(description)
+    weather = {
+        'main': weather_JSON['weather'][0]['main'],
+        'description': weather_JSON['weather'][0]['description'],
+        'temperature': weather_JSON['main']['temp'],
+        'icon': r['weather']['0']['icon'],
+    }
+    weather_data.append(weather)
     # print("\n", r.json(), "\n")
     
-    return render_template('base.html', weather=weather)
+    return render_template('weather.html', weather=weather_data)
 
 @app.route("/", methods = ['GET', 'POST'])
 def Location():
     form = LocationForm()
-    if form.validate_on_submit():
-        city = LocationForm.city.data
-        state = LocationForm.state.data
-        mood = LocationForm.mood.data
+    if form.validate_on_submit() and request.method == "POST":
+        location = {
+            'city': LocationForm.city.data,
+            'state': LocationForm.state.data,
+            'mood': LocationForm.mood.data,
+        }
         
-        weather = [city, state, mood]
-        return url_for('/', weather=weather)
+        return url_for('/success')
     return render_template('location.html', form=form)
 
 if __name__ == '__main__':
