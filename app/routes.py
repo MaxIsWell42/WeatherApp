@@ -17,8 +17,10 @@ mood = ""
 @app.route('/success', methods=["GET","POST"])
 def homepage(location):
     # Get the API key
-    api_key = os.environ.get('API_KEY')
+    api_key = os.getenv('API_KEY')
     # print(api_key)
+    
+    # Final weather stats list
     weather_data = []
     
     # Some default values
